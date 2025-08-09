@@ -1,0 +1,24 @@
+{
+  "hero": {
+    "title": "Transform Your Vision Into",
+    "titleHighlight": "Digital Excellence",
+    "description": "We help businesses grow, streamline operations, and stay ahead in today's competitive market with end-to-end digital solutions and continuous support.",
+    "ctaButton": {
+      "label": "Get Free Consultation",
+      "href": "/consultation"
+    }
+  },
+  "features": [
+    {
+      "title": "Empower sales team before they say \"hello\"",
+      "description": "Use cloud calling solutions to improve your customer experience and automate your lead follow-up process.",
+      "buttonText": "Explore",
+      "hotline": "Hotline: +91 - 8885220219",
+      "image": "/feature-dashboard.png"
+    }
+  ],
+  "companyInfo": {
+    "name": "Hashfinity",
+    "tagline": "Transforms Digital Journeys"
+  }
+}

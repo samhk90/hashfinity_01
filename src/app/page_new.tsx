@@ -1,8 +1,5 @@
 import Header from '@/components/Header';
 import HeroSection from '@/components/HeroSection';
-import MarqueeSection from '@/components/MarqueeSection';
-import ServicesSection from '@/components/ServicesSection';
-import ProjectsSection from '@/components/ProjectsSection';
 import FeatureSection from '@/components/FeatureSection';
 import Footer from '@/components/Footer';
 
@@ -12,9 +9,6 @@ export default function Home() {
       <Header />
       <main>
         <HeroSection />
-        <MarqueeSection />
-        <ServicesSection />
-        <ProjectsSection />
         <FeatureSection />
       </main>
       <Footer />

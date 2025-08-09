@@ -1,0 +1,28 @@
+{
+  "mainNavigation": [
+    {
+      "label": "Services",
+      "href": "/services"
+    },
+    {
+      "label": "About Us",
+      "href": "/about"
+    },
+    {
+      "label": "Services",
+      "href": "/services"
+    },
+    {
+      "label": "Projects",
+      "href": "/projects"
+    },
+    {
+      "label": "How We Work",
+      "href": "/how-we-work"
+    }
+  ],
+  "ctaButton": {
+    "label": "GET IN TOUCH",
+    "href": "/contact"
+  }
+}
