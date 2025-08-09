@@ -2,12 +2,9 @@
 
 import React, { useEffect, useState, useRef } from 'react';
 import Link from 'next/link';
-import contentData from '@/data/content.json';
 
 export default function HeroSection() {
-  const { hero } = contentData;
   const [isVisible, setIsVisible] = useState(false);
-  const [textAnimationComplete, setTextAnimationComplete] = useState(false);
   const heroRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -16,14 +13,8 @@ export default function HeroSection() {
       setIsVisible(true);
     }, 300);
 
-    // Complete text animation after delay
-    const textTimer = setTimeout(() => {
-      setTextAnimationComplete(true);
-    }, 2000);
-
     return () => {
       clearTimeout(timer);
-      clearTimeout(textTimer);
     };
   }, []);
 
@@ -50,7 +41,7 @@ export default function HeroSection() {
         {/* Description with fade-in animation */}
         <div className="mb-12">
           <p className={`text-gray-700 text-lg sm:text-xl md:text-2xl lg:text-2xl leading-relaxed max-w-4xl mx-auto transition-all duration-1000 delay-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-            We help businesses grow, streamline operations, and stay ahead in today's competitive market with end-to-end digital solutions and continuous support.
+            We help businesses grow, streamline operations, and stay ahead in today&apos;s competitive market with end-to-end digital solutions and continuous support.
           </p>
         </div>
         

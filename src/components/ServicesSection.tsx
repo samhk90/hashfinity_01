@@ -216,11 +216,6 @@ export default function ServicesSection() {
     setCurrentSlide((prev) => (prev - 1 + totalSlides) % totalSlides);
   };
 
-  const getVisibleServices = () => {
-    const startIndex = currentSlide * cardsPerView;
-    return services.slice(startIndex, startIndex + cardsPerView);
-  };
-
   return (
     <section ref={sectionRef} className="py-12 px-4 bg-white relative overflow-hidden">
       <div className="container mx-auto max-w-7xl">
@@ -243,8 +238,8 @@ export default function ServicesSection() {
             <span className="inline-block animate-pulse">and Powerful Mobile Apps!</span>
           </h3>
           <p className="text-gray-600 w-3xl text-lg leading-relaxed animate-fade-in-up" style={{ animationDelay: '0.8s' }}>
-            At Hashfinity Technologies, we don't just build solutions... we solve problems. Whether 
-            you're a startup testing ideas or an established brand scaling operations, we offer end-
+            At Hashfinity Technologies, we don&apos;t just build solutions... we solve problems. Whether 
+            you&apos;re a startup testing ideas or an established brand scaling operations, we offer end-
             to-end services tailored to your business needs.
           </p>
           <div className={`mt-6 flex justify-between items-center transform transition-all duration-700 delay-1000 ${

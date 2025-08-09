@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Image from 'next/image';
 import contentData from '@/data/content.json';
 
 export default function FeatureSection() {
