@@ -1,14 +1,14 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
 
 export default function ServicesSection() {
-  const [currentSlide, setCurrentSlide] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
   const [visibleCards, setVisibleCards] = useState(new Set());
   const sectionRef = useRef(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const cardsPerView = 5;
   
   const services = [
     {
@@ -155,8 +155,6 @@ export default function ServicesSection() {
     }
   ];
 
-  const totalSlides = Math.ceil(services.length / cardsPerView);
-
   // Intersection Observer for section visibility
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -206,24 +204,16 @@ export default function ServicesSection() {
     });
 
     return () => observer.disconnect();
-  }, [currentSlide]);
-
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % totalSlides);
-  };
-
-  const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + totalSlides) % totalSlides);
-  };
+  }, []);
 
   return (
     <section ref={sectionRef} className="py-12 px-4 bg-white relative overflow-hidden">
       <div className="container mx-auto max-w-7xl">
         {/* Header */}
-        <div className={`text-left mb-10 transform transition-all duration-1000 ${
+        <div className={`text-left mb-6 md:mb-10 transform transition-all duration-1000 ${
           isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
         }`}>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 animate-fade-in-up">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 mb-4 animate-fade-in-up">
             <span className="inline-block animate-slide-in-right" style={{ animationDelay: '0.2s' }}>
               Hashfinity Transforms Digital Journeys
             </span>
@@ -232,164 +222,122 @@ export default function ServicesSection() {
               with Cutting-Edge AI Technology.
             </span>
           </h2>
-          <h3 className="text-2xl md:text-3xl font-bold text-blue-600 mb-4 animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
-            <span className="inline-block">Crafting Seamless Websites, Stunning Designs,</span>
-            <br />
-            <span className="inline-block animate-pulse">and Powerful Mobile Apps!</span>
+          <h3 className="text-xl md:text-2xl lg:text-3xl font-bold text-blue-600 mb-4 animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
+            <span className="inline-block">Crafting Seamless Websites, Stunning Designs,
+            <br className="hidden sm:block" />and Powerful Mobile Apps!</span>
           </h3>
-          <p className="text-gray-600 w-3xl text-lg leading-relaxed animate-fade-in-up" style={{ animationDelay: '0.8s' }}>
+          <p className="text-gray-600 text-base md:text-lg leading-relaxed animate-fade-in-up" style={{ animationDelay: '0.8s' }}>
             At Hashfinity Technologies, we don&apos;t just build solutions... we solve problems. Whether 
             you&apos;re a startup testing ideas or an established brand scaling operations, we offer end-
             to-end services tailored to your business needs.
           </p>
-          <div className={`mt-6 flex justify-between items-center transform transition-all duration-700 delay-1000 ${
-            isVisible ? 'translate-y-0 opacity-100' : 'translate-y-5 opacity-0'
-          }`}>
-            {/* Left Navigation Button */}
-            <button 
-              onClick={prevSlide}
-              disabled={currentSlide === 0}
-              className="w-12 h-12 bg-black rounded-full flex items-center justify-center hover:bg-gray-800 transition-all duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed transform hover:scale-110 hover:shadow-xl animate-bounce-slow"
-            >
-              <svg className="w-6 h-6 text-white transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-              </svg>
-            </button>
-
-            {/* Slide Indicators */}
-            <div className="flex space-x-2">
-              {Array.from({ length: totalSlides }).map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentSlide(index)}
-                  className={`w-3 h-3 rounded-full transition-all duration-300 transform hover:scale-125 ${
-                    index === currentSlide ? 'bg-blue-600 animate-pulse' : 'bg-gray-300 hover:bg-gray-400'
-                  }`}
-                />
-              ))}
-            </div>
-
-            {/* Right Navigation Button */}
-            <button 
-              onClick={nextSlide}
-              disabled={currentSlide === totalSlides - 1}
-              className="w-12 h-12 bg-black rounded-full flex items-center justify-center hover:bg-gray-800 transition-all duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed transform hover:scale-110 hover:shadow-xl animate-bounce-slow"
-            >
-              <svg className="w-6 h-6 text-white transition-transform duration-300 group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </button>
-          </div>
         </div>
 
-        {/* Services Carousel */}
-        <div className="relative overflow-hidden">
-          <div 
-            className="flex transition-all duration-700 ease-out gap-6"
-            style={{ transform: `translateX(-${currentSlide * 100}%)` }}
-          >
-            {services.map((service, index) => (
-              <div 
-                key={index}
-                ref={(el) => { cardRefs.current[index] = el; }}
-                data-index={index}
-                className={`flex-shrink-0 w-1/5 bg-gray-100 rounded-lg p-6 transition-all duration-700 transform ${
-                  visibleCards.has(index)
-                    ? 'translate-y-0 opacity-100 scale-100 rotate-0' 
-                    : 'translate-y-20 opacity-0 scale-90 rotate-1'
-                } hover:shadow-2xl hover:bg-gray-200 hover:scale-105 hover:-translate-y-2 group`}
-                style={{ 
-                  transitionDelay: visibleCards.has(index) ? `${(index % cardsPerView) * 100}ms` : '0ms',
-                  transitionTimingFunction: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-                }}
-              >
-                {/* Icon */}
-                <div className={`mb-4 transform transition-all duration-500 ${
-                  visibleCards.has(index) 
-                    ? 'scale-100 rotate-0 opacity-100' 
-                    : 'scale-75 rotate-12 opacity-0'
-                } group-hover:scale-110 group-hover:rotate-6`}
-                style={{ transitionDelay: visibleCards.has(index) ? `${(index % cardsPerView) * 100 + 200}ms` : '0ms' }}>
+        {/* Services Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 md:gap-6">
+          {services.map((service, index) => (
+            <div 
+              key={index}
+              ref={(el) => { cardRefs.current[index] = el; }}
+              data-index={index}
+              className={`bg-gray-100 rounded-lg p-4 md:p-6 transition-all duration-700 transform ${
+                visibleCards.has(index)
+                  ? 'translate-y-0 opacity-100 scale-100 rotate-0' 
+                  : 'translate-y-20 opacity-0 scale-90 rotate-1'
+              } hover:shadow-2xl hover:bg-gray-200 hover:-translate-y-2 group`}
+              style={{ 
+                transitionDelay: visibleCards.has(index) ? `${index * 100}ms` : '0ms',
+                transitionTimingFunction: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+              }}
+            >
+              {/* Icon */}
+              <div className={`mb-4 transform transition-all duration-500 ${
+                visibleCards.has(index) 
+                  ? 'scale-100 rotate-0 opacity-100' 
+                  : 'scale-75 rotate-12 opacity-0'
+              } `}
+              style={{ transitionDelay: visibleCards.has(index) ? `${index * 100 + 200}ms` : '0ms' }}>
+                <div className="w-6 h-6 md:w-8 md:h-8 text-blue-400">
                   {service.icon}
                 </div>
-                
-                {/* Title */}
-                <h4 className={`font-bold text-lg text-gray-900 mb-3 transition-all duration-500 ${
-                  visibleCards.has(index) 
-                    ? 'translate-x-0 opacity-100' 
-                    : 'translate-x-4 opacity-0'
-                } group-hover:text-blue-600`}
-                style={{ transitionDelay: visibleCards.has(index) ? `${(index % cardsPerView) * 100 + 300}ms` : '0ms' }}>
-                  {service.title}
-                </h4>
-                
-                {/* Description */}
-                <p className={`text-gray-600 text-sm mb-4 leading-relaxed transition-all duration-500 ${
+              </div>
+              
+              {/* Title */}
+              <h4 className={`font-bold text-base md:text-lg text-gray-900 mb-3 transition-all duration-500 ${
+                visibleCards.has(index) 
+                  ? 'translate-x-0 opacity-100' 
+                  : 'translate-x-4 opacity-0'
+              } group-hover:text-blue-600`}
+              style={{ transitionDelay: visibleCards.has(index) ? `${index * 100 + 300}ms` : '0ms' }}>
+                {service.title}
+              </h4>
+              
+              {/* Description */}
+              <p className={`text-gray-600 text-xs md:text-sm mb-4 leading-relaxed transition-all duration-500 ${
+                visibleCards.has(index) 
+                  ? 'translate-y-0 opacity-100' 
+                  : 'translate-y-2 opacity-0'
+              } group-hover:text-gray-700`}
+              style={{ transitionDelay: visibleCards.has(index) ? `${index * 100 + 400}ms` : '0ms' }}>
+                {service.description}
+              </p>
+              
+              {/* Features List */}
+              <div className={`mb-4 transition-all duration-500 ${
+                visibleCards.has(index) 
+                  ? 'translate-x-0 opacity-100' 
+                  : 'translate-x-2 opacity-0'
+              } group-hover:translate-x-1`}
+              style={{ transitionDelay: visibleCards.has(index) ? `${index * 100 + 500}ms` : '0ms' }}>
+                <p className={`font-semibold text-gray-800 text-xs md:text-sm mb-2 transition-all duration-400 ${
                   visibleCards.has(index) 
                     ? 'translate-y-0 opacity-100' 
-                    : 'translate-y-2 opacity-0'
-                } group-hover:text-gray-700`}
-                style={{ transitionDelay: visibleCards.has(index) ? `${(index % cardsPerView) * 100 + 400}ms` : '0ms' }}>
-                  {service.description}
+                    : 'translate-y-1 opacity-0'
+                } group-hover:text-blue-700`}
+                style={{ transitionDelay: visibleCards.has(index) ? `${index * 100 + 600}ms` : '0ms' }}>
+                  {index === 0 && "We do:"}
+                  {index === 1 && "We offer:"}
+                  {index === 2 && "Includes:"}
+                  {index === 3 && "We specialize in:"}
+                  {index === 4 && "Capabilities:"}
+                  {index === 5 && "Services:"}
+                  {index === 6 && "Security:"}
+                  {index === 7 && "Features:"}
+                  {index === 8 && "Solutions:"}
                 </p>
-                
-                {/* Features List */}
-                <div className={`mb-4 transition-all duration-500 ${
-                  visibleCards.has(index) 
-                    ? 'translate-x-0 opacity-100' 
-                    : 'translate-x-2 opacity-0'
-                } group-hover:translate-x-1`}
-                style={{ transitionDelay: visibleCards.has(index) ? `${(index % cardsPerView) * 100 + 500}ms` : '0ms' }}>
-                  <p className={`font-semibold text-gray-800 text-sm mb-2 transition-all duration-400 ${
-                    visibleCards.has(index) 
-                      ? 'translate-y-0 opacity-100' 
-                      : 'translate-y-1 opacity-0'
-                  } group-hover:text-blue-700`}
-                  style={{ transitionDelay: visibleCards.has(index) ? `${(index % cardsPerView) * 100 + 600}ms` : '0ms' }}>
-                    {index === 0 && "We do:"}
-                    {index === 1 && "We offer:"}
-                    {index === 2 && "Includes:"}
-                    {index === 3 && "We specialize in:"}
-                    {index === 4 && "Capabilities:"}
-                    {index === 5 && "Services:"}
-                    {index === 6 && "Security:"}
-                    {index === 7 && "Features:"}
-                    {index === 8 && "Solutions:"}
-                  </p>
-                  <ul className="text-xs text-gray-600 space-y-1">
-                    {service.features.map((feature, featureIndex) => (
-                      <li 
-                        key={featureIndex}
-                        className={`transition-all duration-400 ${
-                          visibleCards.has(index) 
-                            ? 'translate-x-0 opacity-100' 
-                            : 'translate-x-2 opacity-0'
-                        } hover:text-gray-800 hover:translate-x-1`}
-                        style={{ 
-                          transitionDelay: visibleCards.has(index) 
-                            ? `${(index % cardsPerView) * 100 + 700 + featureIndex * 50}ms` 
-                            : '0ms' 
-                        }}
-                      >
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                
-                {/* Read More Link */}
-                <button className={`text-blue-600 text-sm font-medium hover:text-blue-700 transition-all duration-500 transform hover:scale-105 hover:translate-x-2 relative ${
-                  visibleCards.has(index) 
-                    ? 'translate-y-0 opacity-100 scale-100' 
-                    : 'translate-y-2 opacity-0 scale-95'
-                } group-hover:animate-pulse`}
-                style={{ transitionDelay: visibleCards.has(index) ? `${(index % cardsPerView) * 100 + 800}ms` : '0ms' }}>
-                  Read More
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
-                </button>
+                <ul className="text-xs text-gray-600 space-y-1">
+                  {service.features.map((feature, featureIndex) => (
+                    <li 
+                      key={featureIndex}
+                      className={`transition-all duration-400 ${
+                        visibleCards.has(index) 
+                          ? 'translate-x-0 opacity-100' 
+                          : 'translate-x-2 opacity-0'
+                      } hover:text-gray-800 hover:translate-x-1`}
+                      style={{ 
+                        transitionDelay: visibleCards.has(index) 
+                          ? `${index * 100 + 700 + featureIndex * 50}ms` 
+                          : '0ms' 
+                      }}
+                    >
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
               </div>
-            ))}
-          </div>
+              
+              {/* Read More Link */}
+              <button className={`text-blue-600 text-xs md:text-sm font-medium hover:text-blue-700 transition-all duration-500 transform hover:scale-105 hover:translate-x-2 relative ${
+                visibleCards.has(index) 
+                  ? 'translate-y-0 opacity-100 scale-100' 
+                  : 'translate-y-2 opacity-0 scale-95'
+              } group-hover:animate-pulse`}
+              style={{ transitionDelay: visibleCards.has(index) ? `${index * 100 + 800}ms` : '0ms' }}>
+                Read More
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
+              </button>
+            </div>
+          ))}
         </div>
       </div>
     </section>
