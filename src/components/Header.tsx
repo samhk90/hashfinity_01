@@ -19,10 +19,10 @@ export default function Header() {
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
       isScrolled 
-        ? 'bg-white/20 backdrop-blur-xl shadow-xl border-b border-white/30' 
-        : 'bg-transparent backdrop-blur-lg border-b border-white/10'
+        ? 'bg-white/95 backdrop-blur-xl shadow-xl border-b border-gray-200/50' 
+        : 'bg-white/30 backdrop-blur-xl border-b border-white/20 shadow-lg'
     }`}>
-      <nav className="container mx-auto px-4 lg:px-8 py-3 flex items-center justify-between md:justify-between">
+      <nav className=" max-w-screen-xl  px-4 lg:px-8 py-3 flex items-center justify-baseline">
   {/* Logo */}
   <Link href="/" className="flex items-center space-x-2 sm:space-x-3 group">
     <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-blue-500 via-blue-600 to-purple-600 rounded-xl sm:rounded-2xl flex items-center justify-center shadow-lg hover-lift group-hover:scale-110 transition-all duration-300">
@@ -30,12 +30,12 @@ export default function Header() {
     </div>
     <div className="flex flex-col">
       <span className={`font-bold text-lg sm:text-xl tracking-wide transition-colors duration-300 group-hover:text-blue-600 ${
-        isScrolled ? 'text-gray-900' : 'text-white drop-shadow-lg'
+        isScrolled ? 'text-gray-900' : 'text-gray-900 drop-shadow-sm'
       }`}>
         HASHFINITY
       </span>
-      <span className={`text-xs tracking-widest transition-colors duration-300 group-hover:text-blue-400 ${
-        isScrolled ? 'text-gray-600' : 'text-gray-200 drop-shadow-md'
+      <span className={`text-xs tracking-widest transition-colors duration-300 group-hover:text-blue-500 ${
+        isScrolled ? 'text-gray-600' : 'text-gray-700 drop-shadow-sm'
       }`}>
         BLOCKCHAIN
       </span>
@@ -67,10 +67,10 @@ export default function Header() {
 
   {/* Mobile Menu Button */}
   <button 
-    className={`md:hidden ml-auto p-2 rounded-lg transition-all duration-300 hover-lift backdrop-blur-md ${
+    className={`md:hidden ml-30 justify-end p-2 rounded-lg transition-all duration-300 hover-lift backdrop-blur-md ${
       isScrolled 
         ? 'text-gray-900 hover:bg-white/20 bg-white/10 border border-gray-300' 
-        : 'text-white hover:bg-white/20 bg-white/10 border border-white/30 drop-shadow-lg'
+        : 'text-gray-900 hover:bg-white/20 bg-white/20 border border-gray-400 shadow-lg'
     }`}
     onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
   >
@@ -87,13 +87,13 @@ export default function Header() {
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="md:hidden  backdrop-blur-xl border-t border-white/20 shadow-2xl animate-fade-in-up">
-          <div className="container mx-auto px-4 sm:px-6 py-6 space-y-1">
+  <div className="md:hidden w-full bg-white/95 backdrop-blur-xl border-t border-gray-200/50 shadow-2xl animate-fade-in-up">
+    <div className="max-w-screen-xl  px-4 sm:px-6 py-6 space-y-1">
             {navigationData.mainNavigation.map((item, index) => (
               <Link
                 key={index}
                 href={item.href}
-                className="block text-black hover:text-blue-300 transition-all duration-300 py-3 px-4 font-medium border-b border-white/10 hover:border-blue-400/50 hover:bg-white/10 rounded-lg backdrop-blur-sm"
+                className="block text-gray-800 hover:text-blue-600 transition-all duration-300 py-3 px-4 font-medium border-b border-gray-200/30 hover:border-blue-500/50 hover:bg-blue-50/50 rounded-lg"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 {item.label}
