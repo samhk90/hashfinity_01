@@ -31,10 +31,10 @@ const VendorSection = () => {
         {/* Header */}
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
-            We're More Than Just a Vendor, <span className="text-blue-600">We're Your Product Development Partner</span>
+            We&apos;re More Than Just a Vendor, <span className="text-blue-600">We&apos;re Your Product Development Partner</span>
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            We're committed to your success, from ideation to launch and beyond
+            We&apos;re committed to your success, from ideation to launch and beyond
           </p>
         </div>
 

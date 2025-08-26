@@ -3,7 +3,6 @@
 import React from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { fadeInUp, staggerContainer, staggerItem, floatingAnimation, buttonHover } from '@/utils/animations';
 
 export default function HeroSection() {
   return (

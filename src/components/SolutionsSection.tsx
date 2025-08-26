@@ -182,7 +182,7 @@ const SolutionsSection = () => {
                 transition={{ duration: 0.6, delay: 1 }}
                 className="block"
               >
-                Let's discuss your project
+                Let&apos;s discuss your project
               </motion.span>
             </motion.h2>
             

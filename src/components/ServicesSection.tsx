@@ -1,8 +1,6 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { useInView } from 'react-intersection-observer';
 
 export default function ServicesSection() {
   const [isVisible, setIsVisible] = useState(false);

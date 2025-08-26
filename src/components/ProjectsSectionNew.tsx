@@ -229,7 +229,7 @@ export default function ProjectsSection() {
               transition={{ duration: 0.6, delay: 3.1 }}
               className="text-xl mb-8 opacity-90"
             >
-              Let's discuss how we can bring your vision to life with our expertise and innovation.
+              Let&apos;s discuss how we can bring your vision to life with our expertise and innovation.
             </motion.p>
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
