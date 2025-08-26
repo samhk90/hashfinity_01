@@ -22,17 +22,7 @@ export default function HeroSection() {
       />
       
       {/* Floating background elements */}
-      <motion.div
-        animate={{
-          y: [-10, 10, -10],
-        }}
-        transition={{
-          duration: 3,
-          repeat: Infinity,
-          ease: "easeInOut"
-        }}
-        className="absolute top-20 left-10 w-20 h-20 bg-blue-200 rounded-full opacity-20"
-      />
+
       <motion.div
         animate={{
           y: [-20, 20, -20],
