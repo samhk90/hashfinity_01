@@ -3,7 +3,8 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import navigationData from '@/data/navigation.json';
-
+import Image from 'next/image';
+import logo from "@/../public/logo1.png"
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -25,17 +26,7 @@ export default function Header() {
       <nav className="w-screen px-4 py-3 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center space-x-3 group">
-          <div className="w-12 h-12 bg-gradient-to-br from-blue-500 via-blue-600 to-purple-600 rounded-2xl flex items-center justify-center shadow-neon hover-lift animate-pulse-glow group-hover:scale-110 transition-all duration-300">
-            <span className="text-white font-bold text-xl">H</span>
-          </div>
-          <div className="flex flex-col">
-            <span className="text-gray-800 font-bold text-xl tracking-wide group-hover:text-blue-600 transition-colors duration-300">
-              HASHFINITY
-            </span>
-            <span className="text-gray-600 text-xs tracking-widest group-hover:text-blue-500 transition-colors duration-300">
-              BLOCKCHAIN
-            </span>
-          </div>
+            <Image src={logo} alt="HASHFINITY Logo" width={150} height={150} />
         </Link>
 
         {/* Desktop Navigation Links */}
