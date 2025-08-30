@@ -1,12 +1,16 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function ServicesSection() {
   const [isVisible, setIsVisible] = useState(false);
   const [visibleCards, setVisibleCards] = useState(new Set());
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isCarouselMode, setIsCarouselMode] = useState(false);
   const sectionRef = useRef(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const carouselRef = useRef<HTMLDivElement | null>(null);
   
   const services = [
     {
@@ -171,28 +175,93 @@ export default function ServicesSection() {
     return () => observer.disconnect();
   }, []);
 
-  // Intersection Observer for individual card scroll animations
+  // Check screen size to determine carousel mode
   useEffect(() => {
+    const checkScreenSize = () => {
+      setIsCarouselMode(window.innerWidth < 768);
+    };
+
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
+
+  // Auto-play carousel
+  useEffect(() => {
+    if (!isCarouselMode) return;
+
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % services.length);
+    }, 4000);
+
+    return () => clearInterval(interval);
+  }, [isCarouselMode, services.length]);
+
+  // Carousel navigation functions
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % services.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + services.length) % services.length);
+  };
+
+  const goToSlide = (index: number) => {
+    setCurrentSlide(index);
+  };
+
+  // Touch/swipe handlers
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
+
+    if (isLeftSwipe) {
+      nextSlide();
+    } else if (isRightSwipe) {
+      prevSlide();
+    }
+  };
+
+  // Get slides to show based on screen size
+  const getSlidesToShow = () => {
+    if (window.innerWidth >= 1536) return 5; // 2xl
+    if (window.innerWidth >= 1280) return 4; // xl
+    if (window.innerWidth >= 1024) return 3; // lg
+    if (window.innerWidth >= 640) return 2;  // sm
+    return 1; // mobile
+  };
+
+  // Intersection Observer for individual card scroll animations (desktop only)
+  useEffect(() => {
+    if (isCarouselMode) return;
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             const cardIndex = parseInt(entry.target.getAttribute('data-index') || '0');
             setVisibleCards(prev => new Set([...prev, cardIndex]));
-          } else {
-            // Optional: Remove card from visible set when it goes out of view
-            const cardIndex = parseInt(entry.target.getAttribute('data-index') || '0');
-            setVisibleCards(prev => {
-              const newSet = new Set(prev);
-              newSet.delete(cardIndex);
-              return newSet;
-            });
           }
         });
       },
       { 
-        threshold: 0.2,
-        rootMargin: '0px 0px -100px 0px'
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
       }
     );
 
@@ -202,7 +271,7 @@ export default function ServicesSection() {
     });
 
     return () => observer.disconnect();
-  }, []);
+  }, [isCarouselMode]);
 
   return (
     <section ref={sectionRef} className="py-12 px-4 bg-white relative overflow-hidden">
@@ -231,112 +300,215 @@ export default function ServicesSection() {
           </p>
         </div>
 
-        {/* Services Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 md:gap-6">
-          {services.map((service, index) => (
+        {/* Services Grid/Carousel */}
+        {isCarouselMode ? (
+          // Mobile Carousel View
+          <div className="relative">
             <div 
-              key={index}
-              ref={(el) => { cardRefs.current[index] = el; }}
-              data-index={index}
-              className={`bg-gray-100 rounded-lg p-4 md:p-6 transition-all duration-700 transform ${
-                visibleCards.has(index)
-                  ? 'translate-y-0 opacity-100 scale-100 rotate-0' 
-                  : 'translate-y-20 opacity-0 scale-90 rotate-1'
-              } hover:shadow-2xl hover:bg-gray-200 hover:-translate-y-2 group`}
-              style={{ 
-                transitionDelay: visibleCards.has(index) ? `${index * 100}ms` : '0ms',
-                transitionTimingFunction: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-              }}
+              ref={carouselRef}
+              className="overflow-hidden rounded-lg"
+              onTouchStart={onTouchStart}
+              onTouchMove={onTouchMove}
+              onTouchEnd={onTouchEnd}
             >
-              {/* Icon */}
-              <div className={`mb-4 transform transition-all duration-500 ${
-                visibleCards.has(index) 
-                  ? 'scale-100 rotate-0 opacity-100' 
-                  : 'scale-75 rotate-12 opacity-0'
-              } `}
-              style={{ transitionDelay: visibleCards.has(index) ? `${index * 100 + 200}ms` : '0ms' }}>
-                <div className="w-6 h-6 md:w-8 md:h-8 text-blue-400">
-                  {service.icon}
-                </div>
+              <motion.div 
+                className="flex transition-transform duration-300 ease-in-out"
+                animate={{ x: `-${currentSlide * 100}%` }}
+                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              >
+                {services.map((service, index) => (
+                  <div 
+                    key={index}
+                    className="w-full flex-shrink-0 px-2"
+                  >
+                    <div className="bg-gray-100 rounded-lg p-6 h-full transition-all duration-300 hover:shadow-xl hover:bg-gray-200">
+                      {/* Icon */}
+                      <div className="mb-4">
+                        <div className="w-8 h-8 text-blue-400">
+                          {service.icon}
+                        </div>
+                      </div>
+                      
+                      {/* Title */}
+                      <h4 className="font-bold text-lg text-gray-900 mb-3 hover:text-blue-600 transition-colors">
+                        {service.title}
+                      </h4>
+                      
+                      {/* Description */}
+                      <p className="text-gray-600 text-sm mb-4 leading-relaxed">
+                        {service.description}
+                      </p>
+                      
+                      {/* Features List */}
+                      <div className="mb-4">
+                        <p className="font-semibold text-gray-800 text-sm mb-2">
+                          {index === 0 && "We do:"}
+                          {index === 1 && "We offer:"}
+                          {index === 2 && "Includes:"}
+                          {index === 3 && "We specialize in:"}
+                          {index === 4 && "Capabilities:"}
+                          {index === 5 && "Services:"}
+                          {index === 6 && "Security:"}
+                          {index === 7 && "Features:"}
+                          {index === 8 && "Solutions:"}
+                        </p>
+                        <ul className="text-xs text-gray-600 space-y-1">
+                          {service.features.map((feature, featureIndex) => (
+                            <li key={featureIndex} className="hover:text-gray-800 transition-colors">
+                              {feature}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                      
+                      {/* Read More Link */}
+                      <button className="text-blue-600 text-sm font-medium hover:text-blue-700 transition-all duration-300 hover:translate-x-1">
+                        Read More →
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </motion.div>
+            </div>
+
+            {/* Carousel Navigation */}
+            <div className="flex items-center justify-between mt-6">
+              {/* Previous Button */}
+              <button
+                onClick={prevSlide}
+                className="p-2 rounded-full bg-blue-600 text-white hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
+                aria-label="Previous slide"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                </svg>
+              </button>
+
+              {/* Dots Indicator */}
+              <div className="flex space-x-2">
+                {services.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => goToSlide(index)}
+                    className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                      index === currentSlide
+                        ? 'bg-blue-600 scale-110'
+                        : 'bg-gray-300 hover:bg-gray-400'
+                    }`}
+                    aria-label={`Go to slide ${index + 1}`}
+                  />
+                ))}
               </div>
-              
-              {/* Title */}
-              <h4 className={`font-bold text-base md:text-lg text-gray-900 mb-3 transition-all duration-500 ${
-                visibleCards.has(index) 
-                  ? 'translate-x-0 opacity-100' 
-                  : 'translate-x-4 opacity-0'
-              } group-hover:text-blue-600`}
-              style={{ transitionDelay: visibleCards.has(index) ? `${index * 100 + 300}ms` : '0ms' }}>
-                {service.title}
-              </h4>
-              
-              {/* Description */}
-              <p className={`text-gray-600 text-xs md:text-sm mb-4 leading-relaxed transition-all duration-500 ${
-                visibleCards.has(index) 
-                  ? 'translate-y-0 opacity-100' 
-                  : 'translate-y-2 opacity-0'
-              } group-hover:text-gray-700`}
-              style={{ transitionDelay: visibleCards.has(index) ? `${index * 100 + 400}ms` : '0ms' }}>
-                {service.description}
-              </p>
-              
-              {/* Features List */}
-              <div className={`mb-4 transition-all duration-500 ${
-                visibleCards.has(index) 
-                  ? 'translate-x-0 opacity-100' 
-                  : 'translate-x-2 opacity-0'
-              } group-hover:translate-x-1`}
-              style={{ transitionDelay: visibleCards.has(index) ? `${index * 100 + 500}ms` : '0ms' }}>
-                <p className={`font-semibold text-gray-800 text-xs md:text-sm mb-2 transition-all duration-400 ${
-                  visibleCards.has(index) 
-                    ? 'translate-y-0 opacity-100' 
-                    : 'translate-y-1 opacity-0'
-                } group-hover:text-blue-700`}
-                style={{ transitionDelay: visibleCards.has(index) ? `${index * 100 + 600}ms` : '0ms' }}>
-                  {index === 0 && "We do:"}
-                  {index === 1 && "We offer:"}
-                  {index === 2 && "Includes:"}
-                  {index === 3 && "We specialize in:"}
-                  {index === 4 && "Capabilities:"}
-                  {index === 5 && "Services:"}
-                  {index === 6 && "Security:"}
-                  {index === 7 && "Features:"}
-                  {index === 8 && "Solutions:"}
-                </p>
-                <ul className="text-xs text-gray-600 space-y-1">
-                  {service.features.map((feature, featureIndex) => (
-                    <li 
-                      key={featureIndex}
-                      className={`transition-all duration-400 ${
-                        visibleCards.has(index) 
-                          ? 'translate-x-0 opacity-100' 
-                          : 'translate-x-2 opacity-0'
-                      } hover:text-gray-800 hover:translate-x-1`}
-                      style={{ 
-                        transitionDelay: visibleCards.has(index) 
-                          ? `${index * 100 + 700 + featureIndex * 50}ms` 
-                          : '0ms' 
-                      }}
-                    >
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              
-              {/* Read More Link */}
-              <button className={`text-blue-600 text-xs md:text-sm font-medium hover:text-blue-700 transition-all duration-500 transform hover:scale-105 hover:translate-x-2 relative ${
-                visibleCards.has(index) 
-                  ? 'translate-y-0 opacity-100 scale-100' 
-                  : 'translate-y-2 opacity-0 scale-95'
-              } group-hover:animate-pulse`}
-              style={{ transitionDelay: visibleCards.has(index) ? `${index * 100 + 800}ms` : '0ms' }}>
-                Read More
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
+
+              {/* Next Button */}
+              <button
+                onClick={nextSlide}
+                className="p-2 rounded-full bg-blue-600 text-white hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
+                aria-label="Next slide"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
               </button>
             </div>
-          ))}
-        </div>
+
+            {/* Slide Counter */}
+            <div className="text-center mt-4 text-sm text-gray-500">
+              {currentSlide + 1} of {services.length}
+            </div>
+          </div>
+        ) : (
+          // Desktop Grid View
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 md:gap-6">
+            {services.map((service, index) => (
+              <motion.div 
+                key={index}
+                ref={(el) => { cardRefs.current[index] = el; }}
+                data-index={index}
+                initial={{ opacity: 0, y: 50, scale: 0.9 }}
+                animate={{ 
+                  opacity: visibleCards.has(index) ? 1 : 0,
+                  y: visibleCards.has(index) ? 0 : 50,
+                  scale: visibleCards.has(index) ? 1 : 0.9
+                }}
+                transition={{ 
+                  duration: 0.6,
+                  delay: index * 0.1,
+                  ease: "easeOut"
+                }}
+                whileHover={{ 
+                  y: -8, 
+                  scale: 1.02,
+                  transition: { duration: 0.2 }
+                }}
+                className="bg-gray-100 rounded-lg p-4 md:p-6 transition-all duration-300 hover:shadow-2xl hover:bg-gray-200 group cursor-pointer"
+              >
+                {/* Icon */}
+                <motion.div 
+                  className="mb-4"
+                  whileHover={{ scale: 1.1, rotate: 5 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <div className="w-6 h-6 md:w-8 md:h-8 text-blue-400">
+                    {service.icon}
+                  </div>
+                </motion.div>
+                
+                {/* Title */}
+                <h4 className="font-bold text-base md:text-lg text-gray-900 mb-3 transition-colors group-hover:text-blue-600">
+                  {service.title}
+                </h4>
+                
+                {/* Description */}
+                <p className="text-gray-600 text-xs md:text-sm mb-4 leading-relaxed group-hover:text-gray-700 transition-colors">
+                  {service.description}
+                </p>
+                
+                {/* Features List */}
+                <div className="mb-4">
+                  <p className="font-semibold text-gray-800 text-xs md:text-sm mb-2 group-hover:text-blue-700 transition-colors">
+                    {index === 0 && "We do:"}
+                    {index === 1 && "We offer:"}
+                    {index === 2 && "Includes:"}
+                    {index === 3 && "We specialize in:"}
+                    {index === 4 && "Capabilities:"}
+                    {index === 5 && "Services:"}
+                    {index === 6 && "Security:"}
+                    {index === 7 && "Features:"}
+                    {index === 8 && "Solutions:"}
+                  </p>
+                  <ul className="text-xs text-gray-600 space-y-1">
+                    {service.features.map((feature, featureIndex) => (
+                      <motion.li 
+                        key={featureIndex}
+                        className="hover:text-gray-800 transition-colors"
+                        whileHover={{ x: 4 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        {feature}
+                      </motion.li>
+                    ))}
+                  </ul>
+                </div>
+                
+                {/* Read More Link */}
+                <motion.button 
+                  className="text-blue-600 text-xs md:text-sm font-medium hover:text-blue-700 transition-all duration-300 relative group/button"
+                  whileHover={{ x: 4 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  Read More
+                  <motion.span 
+                    className="absolute bottom-0 left-0 h-0.5 bg-blue-600"
+                    initial={{ width: 0 }}
+                    whileHover={{ width: "100%" }}
+                    transition={{ duration: 0.3 }}
+                  />
+                </motion.button>
+              </motion.div>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );
