@@ -63,28 +63,28 @@ html {
 
 /* Utility classes for animations */
 .animate-float {
-  animation: float 6s ease-in-out infinite;
+  animation: float 3s ease-in-out infinite;
 }
 
 .animate-pulse-glow {
-  animation: pulse-glow 2s ease-in-out infinite;
+  animation: pulse-glow 1s ease-in-out infinite;
 }
 
 .animate-gradient {
   background-size: 400% 400%;
-  animation: gradient-shift 8s ease infinite;
+  animation: gradient-shift 4s ease infinite;
 }
 
 .animate-fade-in-up {
-  animation: fade-in-up 0.8s ease-out;
+  animation: fade-in-up 0.4s ease-out;
 }
 
 .animate-slide-in-right {
-  animation: slide-in-right 0.8s ease-out;
+  animation: slide-in-right 0.4s ease-out;
 }
 
 .animate-rotate-gradient {
-  animation: rotate-gradient 20s linear infinite;
+  animation: rotate-gradient 10s linear infinite;
 }
 
 /* Custom shadow for elevated elements */
@@ -144,7 +144,7 @@ html {
 
 /* Interactive hover effects */
 .hover-lift {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .hover-lift:hover {

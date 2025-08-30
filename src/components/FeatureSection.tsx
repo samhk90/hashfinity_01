@@ -47,8 +47,8 @@ export default function FeatureSection() {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.1
+        staggerChildren: 0.1,
+        delayChildren: 0.05
       }
     }
   };
@@ -67,13 +67,13 @@ export default function FeatureSection() {
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
+          transition={{ duration: 0.4, delay: 0.1 }}
           className="mb-16"
         >
           <motion.h2 
             initial={{ opacity: 0, y: 30, scale: 0.95 }}
             animate={inView ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 30, scale: 0.95 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
+            transition={{ duration: 0.4, delay: 0.1 }}
             className="font-[Satoshi] font-bold mb-5 text-black text-[40px] leading-[52px] tracking-[0] align-middle"
           >
             TAKE CHARGE STEERING YOUR DEVELOPMENT
@@ -81,7 +81,7 @@ export default function FeatureSection() {
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
             animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-            transition={{ duration: 0.6, delay: 0.6 }}
+            transition={{ duration: 0.3, delay: 0.3 }}
             className="font-[Avenir_Next_LT_Pro] font-bold text-[40px] p-0 leading-none tracking-[0] align-middle text-[#044BD9]"
           >
             Our ability to combine expertise and systems<br/> thinking is what fuels us as a team.
@@ -98,12 +98,12 @@ export default function FeatureSection() {
               key={team.id}
               initial={{ opacity: 0, y: 50, scale: 0.9 }}
               animate={inView ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 50, scale: 0.9 }}
-              transition={{ duration: 0.6, delay: 0.8 + index * 0.2 }}
+              transition={{ duration: 0.3, delay: 0.4 + index * 0.1 }}
               whileHover={{
                 scale: 1.05,
                 y: -10,
                 boxShadow: "0 25px 50px rgba(0,0,0,0.15)",
-                transition: { duration: 0.3 }
+                transition: { duration: 0.15 }
               }}
               className="bg-gray-100 rounded-2xl shadow-lg border border-gray-100 p-8 text-center cursor-pointer group relative overflow-hidden"
             >
@@ -111,7 +111,7 @@ export default function FeatureSection() {
               <motion.div
                 initial={{ opacity: 0, scale: 0 }}
                 whileHover={{ opacity: 0.1, scale: 1 }}
-                transition={{ duration: 0.3 }}
+                transition={{ duration: 0.15 }}
                 className="absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl"
               />
               
@@ -120,14 +120,14 @@ export default function FeatureSection() {
                 initial={{ opacity: 0, scale: 0, rotate: -180 }}
                 animate={inView ? { opacity: 1, scale: 1, rotate: 0 } : { opacity: 0, scale: 0, rotate: -180 }}
                 transition={{ 
-                  duration: 0.8, 
-                  delay: 0.8 + index * 0.2,
+                  duration: 0.4, 
+                  delay: 0.4 + index * 0.1,
                   type: "spring",
-                  stiffness: 200
+                  stiffness: 300
                 }}
                 whileHover={{
                   rotate: 360,
-                  transition: { duration: 0.6 }
+                  transition: { duration: 0.3 }
                 }}
                 className="flex justify-center mb-6 relative z-10"
               >
@@ -136,12 +136,12 @@ export default function FeatureSection() {
                     y: [0, -5, 0],
                   }}
                   transition={{
-                    duration: 2,
+                    duration: 1.5,
                     repeat: Infinity,
                     ease: "easeInOut",
-                    delay: index * 0.5
+                    delay: index * 0.25
                   }}
-                  className="w-24 h-24 text-black rounded-full flex items-center justify-center transition-all duration-300 group-hover:bg-blue-50"
+                  className="w-24 h-24 text-black rounded-full flex items-center justify-center transition-all duration-150 group-hover:bg-blue-50"
                 >
                   {team.icon}
                 </motion.div>
@@ -151,8 +151,8 @@ export default function FeatureSection() {
               <motion.h3 
                 initial={{ opacity: 0, y: 20 }}
                 animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                transition={{ duration: 0.6, delay: 1 + index * 0.2 }}
-                className="text-xl font-bold text-gray-900 mb-6 relative z-10 group-hover:text-blue-600 transition-colors duration-300"
+                transition={{ duration: 0.3, delay: 0.5 + index * 0.1 }}
+                className="text-xl font-bold text-gray-900 mb-6 relative z-10 group-hover:text-blue-600 transition-colors duration-150"
               >
                 {team.title}
               </motion.h3>
@@ -161,7 +161,7 @@ export default function FeatureSection() {
               <motion.p 
                 initial={{ opacity: 0, y: 20 }}
                 animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                transition={{ duration: 0.6, delay: 1.2 + index * 0.2 }}
+                transition={{ duration: 0.3, delay: 0.6 + index * 0.1 }}
                 className="text-gray-600 leading-relaxed text-sm relative z-10"
               >
                 {team.description}
@@ -171,7 +171,7 @@ export default function FeatureSection() {
               <motion.div
                 initial={{ scaleX: 0 }}
                 whileHover={{ scaleX: 1 }}
-                transition={{ duration: 0.3 }}
+                transition={{ duration: 0.15 }}
                 className="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-blue-500 to-purple-600 rounded-b-2xl w-full"
                 style={{ transformOrigin: "left" }}
               />

@@ -102,7 +102,7 @@ export default function EmpoweringSection() {
       <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Header Section */}
-        <div className={`text-left mb-5 md:mb-4 transform transition-all duration-1000 ${
+        <div className={`text-left mb-5 md:mb-4 transform transition-all duration-500 ${
           isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
         }`}>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800 mb-2 md:mb-4 leading-tight">
@@ -121,44 +121,44 @@ export default function EmpoweringSection() {
       key={feature.id}
       ref={(el) => { itemRefs.current[index] = el; }}
       data-index={index}
-      className={`flex items-start  backdrop-blur-sm rounded-2xl p-2 md:p-6 transition-all duration-700 transform  ${
+      className={`flex items-start  backdrop-blur-sm rounded-2xl p-2 md:p-6 transition-all duration-350 transform  ${
         visibleItems.has(index)
           ? 'translate-y-0 opacity-100 scale-100' 
           : 'translate-y-10 opacity-0 scale-95'
       }`}
       style={{ 
-        transitionDelay: `${index * 150}ms`,
+        transitionDelay: `${index * 75}ms`,
         transitionTimingFunction: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
       }}
     >
       {/* Icon */}
-      <div className={`mr-4 md:mr-6 transition-all duration-500 ${
+      <div className={`mr-4 md:mr-6 transition-all duration-250 ${
         visibleItems.has(index) 
           ? 'scale-100 rotate-0 opacity-100' 
           : 'scale-75 rotate-12 opacity-0'
       }`}
-      style={{ transitionDelay: `${index * 150 + 200}ms` }}>
-        <div className="w-12 h-12 md:w-14 md:h-14 bg-gray-100 rounded-lg flex items-center justify-center transition-all duration-300 hover:bg-gray-200">
+      style={{ transitionDelay: `${index * 75 + 100}ms` }}>
+        <div className="w-12 h-12 md:w-14 md:h-14 bg-gray-100 rounded-lg flex items-center justify-center transition-all duration-150 hover:bg-gray-200">
           {feature.icon}
         </div>
       </div>
       
       {/* Text */}
       <div>
-        <h3 className={`text-lg md:text-xl font-bold text-gray-900 mb-1 md:mb-2 transition-all duration-500 ${
+        <h3 className={`text-lg md:text-xl font-bold text-gray-900 mb-1 md:mb-2 transition-all duration-250 ${
           visibleItems.has(index) 
             ? 'translate-y-0 opacity-100' 
             : 'translate-y-2 opacity-0'
         }`}
-        style={{ transitionDelay: `${index * 150 + 300}ms` }}>
+        style={{ transitionDelay: `${index * 75 + 150}ms` }}>
           {feature.title}
         </h3>
-        <p className={`text-gray-600 leading-relaxed text-sm md:text-base transition-all duration-500 ${
+        <p className={`text-gray-600 leading-relaxed text-sm md:text-base transition-all duration-250 ${
           visibleItems.has(index) 
             ? 'translate-y-0 opacity-100' 
             : 'translate-y-2 opacity-0'
         }`}
-        style={{ transitionDelay: `${index * 150 + 400}ms` }}>
+        style={{ transitionDelay: `${index * 75 + 200}ms` }}>
           {feature.description}
         </p>
       </div>

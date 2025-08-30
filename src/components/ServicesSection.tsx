@@ -7,6 +7,7 @@ export default function ServicesSection() {
   const [isVisible, setIsVisible] = useState(false);
   const [visibleCards, setVisibleCards] = useState(new Set());
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [currentPage, setCurrentPage] = useState(0);
   const [isCarouselMode, setIsCarouselMode] = useState(false);
   const sectionRef = useRef(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -178,32 +179,39 @@ export default function ServicesSection() {
   // Check screen size to determine carousel mode
   useEffect(() => {
     const checkScreenSize = () => {
-      setIsCarouselMode(window.innerWidth < 768);
+      const newCarouselMode = window.innerWidth < 768;
+      
+      // Reset pagination when switching modes
+      if (newCarouselMode !== isCarouselMode) {
+        setCurrentSlide(0);
+        setCurrentPage(0);
+      }
+      
+      // Use carousel only on mobile (screens < 768px)
+      setIsCarouselMode(newCarouselMode);
     };
 
     checkScreenSize();
     window.addEventListener('resize', checkScreenSize);
     return () => window.removeEventListener('resize', checkScreenSize);
-  }, []);
+  }, [isCarouselMode]);
 
-  // Auto-play carousel
-  useEffect(() => {
-    if (!isCarouselMode) return;
-
-    const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % services.length);
-    }, 4000);
-
-    return () => clearInterval(interval);
-  }, [isCarouselMode, services.length]);
+  // Auto-play carousel (completely disabled)
+  // useEffect(() => {
+  //   // Auto-play is completely disabled
+  // }, [isCarouselMode, services.length]);
 
   // Carousel navigation functions
   const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % services.length);
+    const slidesToShow = getSlidesToShow();
+    const maxSlide = Math.ceil(services.length / slidesToShow) - 1;
+    setCurrentSlide((prev) => (prev + 1) % (maxSlide + 1));
   };
 
   const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + services.length) % services.length);
+    const slidesToShow = getSlidesToShow();
+    const maxSlide = Math.ceil(services.length / slidesToShow) - 1;
+    setCurrentSlide((prev) => (prev - 1 + (maxSlide + 1)) % (maxSlide + 1));
   };
 
   const goToSlide = (index: number) => {
@@ -239,61 +247,71 @@ export default function ServicesSection() {
 
   // Get slides to show based on screen size
   const getSlidesToShow = () => {
-    if (window.innerWidth >= 1536) return 5; // 2xl
-    if (window.innerWidth >= 1280) return 4; // xl
-    if (window.innerWidth >= 1024) return 3; // lg
-    if (window.innerWidth >= 640) return 2;  // sm
-    return 1; // mobile
+    if (window.innerWidth >= 1024) return 4; // lg: 4 cards on desktop
+    if (window.innerWidth >= 768) return 2;  // md: 2 cards on tablet
+    return 1; // mobile: 1 card
   };
 
-  // Intersection Observer for individual card scroll animations (desktop only)
+  // Get cards to show per page for desktop grid
+  const getCardsPerPage = () => {// lg: 6 cards (2 rows of 3)
+    if (window.innerWidth >= 768) return 4;  // md: 4 cards (2 rows of 2)
+    return 3; // smaller screens: 3 cards
+  };
+
+  // Desktop grid navigation functions
+  const nextPage = () => {
+    const cardsPerPage = getCardsPerPage();
+    const totalPages = Math.ceil(services.length / cardsPerPage);
+    setCurrentPage((prev) => (prev + 1) % totalPages);
+  };
+
+  const prevPage = () => {
+    const cardsPerPage = getCardsPerPage();
+    const totalPages = Math.ceil(services.length / cardsPerPage);
+    setCurrentPage((prev) => (prev - 1 + totalPages) % totalPages);
+  };
+
+  const goToPage = (pageIndex: number) => {
+    setCurrentPage(pageIndex);
+  };
+
+  // Get current page services for desktop grid
+  const getCurrentPageServices = () => {
+    if (isCarouselMode) return services;
+    
+    const cardsPerPage = getCardsPerPage();
+    const startIndex = currentPage * cardsPerPage;
+    const endIndex = startIndex + cardsPerPage;
+    return services.slice(startIndex, endIndex);
+  };
+
+  // Intersection Observer for individual card scroll animations (not needed with pagination)
   useEffect(() => {
-    if (isCarouselMode) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const cardIndex = parseInt(entry.target.getAttribute('data-index') || '0');
-            setVisibleCards(prev => new Set([...prev, cardIndex]));
-          }
-        });
-      },
-      { 
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-      }
-    );
-
-    // Observe all card elements
-    cardRefs.current.forEach((card) => {
-      if (card) observer.observe(card);
-    });
-
-    return () => observer.disconnect();
+    // This effect is no longer needed since we use pagination instead of scroll-based animations
+    return () => {};
   }, [isCarouselMode]);
 
   return (
     <section ref={sectionRef} className="py-12 px-4 bg-white relative overflow-hidden">
       <div className="container mx-auto max-w-7xl">
         {/* Header */}
-        <div className={`text-left mb-6 md:mb-10 transform transition-all duration-1000 ${
+        <div className={`text-left mb-6 md:mb-10 transform transition-all duration-500 ${
           isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
         }`}>
           <h2 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 mb-4 animate-fade-in-up">
-            <span className="inline-block animate-slide-in-right" style={{ animationDelay: '0.2s' }}>
+            <span className="inline-block animate-slide-in-right" style={{ animationDelay: '0.1s' }}>
               Hashfinity Transforms Digital Journeys
             </span>
             <br />
-            <span className="text-gray-700 inline-block animate-slide-in-right" style={{ animationDelay: '0.4s' }}>
+            <span className="text-gray-700 inline-block animate-slide-in-right" style={{ animationDelay: '0.2s' }}>
               with Cutting-Edge AI Technology.
             </span>
           </h2>
-          <h3 className="text-xl md:text-2xl lg:text-3xl font-bold text-blue-600 mb-4 animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
+          <h3 className="text-xl md:text-2xl lg:text-3xl font-bold text-blue-600 mb-4 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
             <span className="inline-block">Crafting Seamless Websites, Stunning Designs,
             <br className="hidden sm:block" />and Powerful Mobile Apps!</span>
           </h3>
-          <p className="text-gray-600 text-base md:text-lg leading-relaxed animate-fade-in-up" style={{ animationDelay: '0.8s' }}>
+          <p className="text-gray-600 text-base md:text-lg leading-relaxed animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
             At Hashfinity Technologies, we don&apos;t just build solutions... we solve problems. Whether 
             you&apos;re a startup testing ideas or an established brand scaling operations, we offer end-
             to-end services tailored to your business needs.
@@ -312,16 +330,21 @@ export default function ServicesSection() {
               onTouchEnd={onTouchEnd}
             >
               <motion.div 
-                className="flex transition-transform duration-300 ease-in-out"
-                animate={{ x: `-${currentSlide * 100}%` }}
-                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                className="flex transition-transform duration-100 ease-in-out"
+                animate={{ 
+                  x: `-${currentSlide * (100 / getSlidesToShow())}%` 
+                }}
+                transition={{ type: "spring", stiffness: 600, damping: 40 }}
               >
                 {services.map((service, index) => (
                   <div 
                     key={index}
-                    className="w-full flex-shrink-0 px-2"
+                    className="flex-shrink-0 px-2"
+                    style={{ 
+                      width: `${100 / getSlidesToShow()}%` 
+                    }}
                   >
-                    <div className="bg-gray-100 rounded-lg p-6 h-full transition-all duration-300 hover:shadow-xl hover:bg-gray-200">
+                    <div className="bg-gray-100 rounded-lg p-6  transition-all duration-100 hover:shadow-xl hover:bg-gray-200">
                       {/* Icon */}
                       <div className="mb-4">
                         <div className="w-8 h-8 text-blue-400">
@@ -362,7 +385,7 @@ export default function ServicesSection() {
                       </div>
                       
                       {/* Read More Link */}
-                      <button className="text-blue-600 text-sm font-medium hover:text-blue-700 transition-all duration-300 hover:translate-x-1">
+                      <button className="text-blue-600 text-sm font-medium hover:text-blue-700 transition-all duration-100 hover:translate-x-1">
                         Read More →
                       </button>
                     </div>
@@ -376,7 +399,7 @@ export default function ServicesSection() {
               {/* Previous Button */}
               <button
                 onClick={prevSlide}
-                className="p-2 rounded-full bg-blue-600 text-white hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="p-2 rounded-full bg-blue-600 text-white hover:bg-blue-700 transition-colors duration-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 aria-label="Previous slide"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -384,26 +407,12 @@ export default function ServicesSection() {
                 </svg>
               </button>
 
-              {/* Dots Indicator */}
-              <div className="flex space-x-2">
-                {services.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => goToSlide(index)}
-                    className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                      index === currentSlide
-                        ? 'bg-blue-600 scale-110'
-                        : 'bg-gray-300 hover:bg-gray-400'
-                    }`}
-                    aria-label={`Go to slide ${index + 1}`}
-                  />
-                ))}
-              </div>
+        
 
               {/* Next Button */}
               <button
                 onClick={nextSlide}
-                className="p-2 rounded-full bg-blue-600 text-white hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="p-2 rounded-full bg-blue-600 text-white hover:bg-blue-700 transition-colors duration-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 aria-label="Next slide"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -412,101 +421,145 @@ export default function ServicesSection() {
               </button>
             </div>
 
-            {/* Slide Counter */}
-            <div className="text-center mt-4 text-sm text-gray-500">
-              {currentSlide + 1} of {services.length}
-            </div>
+        
           </div>
         ) : (
-          // Desktop Grid View
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 md:gap-6">
-            {services.map((service, index) => (
-              <motion.div 
-                key={index}
-                ref={(el) => { cardRefs.current[index] = el; }}
-                data-index={index}
-                initial={{ opacity: 0, y: 50, scale: 0.9 }}
-                animate={{ 
-                  opacity: visibleCards.has(index) ? 1 : 0,
-                  y: visibleCards.has(index) ? 0 : 50,
-                  scale: visibleCards.has(index) ? 1 : 0.9
-                }}
-                transition={{ 
-                  duration: 0.6,
-                  delay: index * 0.1,
-                  ease: "easeOut"
-                }}
-                whileHover={{ 
-                  y: -8, 
-                  scale: 1.02,
-                  transition: { duration: 0.2 }
-                }}
-                className="bg-gray-100 rounded-lg p-4 md:p-6 transition-all duration-300 hover:shadow-2xl hover:bg-gray-200 group cursor-pointer"
-              >
-                {/* Icon */}
-                <motion.div 
-                  className="mb-4"
-                  whileHover={{ scale: 1.1, rotate: 5 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <div className="w-6 h-6 md:w-8 md:h-8 text-blue-400">
-                    {service.icon}
-                  </div>
-                </motion.div>
-                
-                {/* Title */}
-                <h4 className="font-bold text-base md:text-lg text-gray-900 mb-3 transition-colors group-hover:text-blue-600">
-                  {service.title}
-                </h4>
-                
-                {/* Description */}
-                <p className="text-gray-600 text-xs md:text-sm mb-4 leading-relaxed group-hover:text-gray-700 transition-colors">
-                  {service.description}
-                </p>
-                
-                {/* Features List */}
-                <div className="mb-4">
-                  <p className="font-semibold text-gray-800 text-xs md:text-sm mb-2 group-hover:text-blue-700 transition-colors">
-                    {index === 0 && "We do:"}
-                    {index === 1 && "We offer:"}
-                    {index === 2 && "Includes:"}
-                    {index === 3 && "We specialize in:"}
-                    {index === 4 && "Capabilities:"}
-                    {index === 5 && "Services:"}
-                    {index === 6 && "Security:"}
-                    {index === 7 && "Features:"}
-                    {index === 8 && "Solutions:"}
-                  </p>
-                  <ul className="text-xs text-gray-600 space-y-1">
-                    {service.features.map((feature, featureIndex) => (
-                      <motion.li 
-                        key={featureIndex}
-                        className="hover:text-gray-800 transition-colors"
-                        whileHover={{ x: 4 }}
+          // Desktop Grid View with Pagination
+          <div className="relative">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 ">
+              <AnimatePresence mode="wait">
+                {getCurrentPageServices().map((service, index) => {
+                  const actualIndex = currentPage * getCardsPerPage() + index;
+                  return (
+                    <motion.div 
+                      key={`${currentPage}-${index}`}
+                      initial={{ opacity: 0, y: 50, scale: 0.9 }}
+                      animate={{ 
+                        opacity: 1,
+                        y: 0,
+                        scale: 1
+                      }}
+                      exit={{ opacity: 0, y: -20, scale: 0.9 }}
+                      transition={{ 
+                        duration: 0.4,
+                        delay: index * 0.1,
+                        ease: "easeOut"
+                      }}
+                      whileHover={{ 
+                        y: -8, 
+                        scale: 1.02,
+                        transition: { duration: 0.2 }
+                      }}
+                      className="bg-gray-100 rounded-lg p-4 md:p-6 transition-all duration-200 hover:shadow-2xl hover:bg-gray-200 group cursor-pointer"
+                    >
+                      {/* Icon */}
+                      <motion.div 
+                        className="mb-4"
+                        whileHover={{ scale: 1.1, rotate: 5 }}
                         transition={{ duration: 0.2 }}
                       >
-                        {feature}
-                      </motion.li>
-                    ))}
-                  </ul>
-                </div>
-                
-                {/* Read More Link */}
-                <motion.button 
-                  className="text-blue-600 text-xs md:text-sm font-medium hover:text-blue-700 transition-all duration-300 relative group/button"
-                  whileHover={{ x: 4 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  Read More
-                  <motion.span 
-                    className="absolute bottom-0 left-0 h-0.5 bg-blue-600"
-                    initial={{ width: 0 }}
-                    whileHover={{ width: "100%" }}
-                    transition={{ duration: 0.3 }}
+                        <div className="w-6 h-6 md:w-8 md:h-8 text-blue-400">
+                          {service.icon}
+                        </div>
+                      </motion.div>
+                      
+                      {/* Title */}
+                      <h4 className="font-bold text-base md:text-lg text-gray-900 mb-3 transition-colors group-hover:text-blue-600">
+                        {service.title}
+                      </h4>
+                      
+                      {/* Description */}
+                      <p className="text-gray-600 text-xs md:text-sm mb-4 leading-relaxed group-hover:text-gray-700 transition-colors">
+                        {service.description}
+                      </p>
+                      
+                      {/* Features List */}
+                      <div className="mb-4">
+                        <p className="font-semibold text-gray-800 text-xs md:text-sm mb-2 group-hover:text-blue-700 transition-colors">
+                          {actualIndex === 0 && "We do:"}
+                          {actualIndex === 1 && "We offer:"}
+                          {actualIndex === 2 && "Includes:"}
+                          {actualIndex === 3 && "We specialize in:"}
+                          {actualIndex === 4 && "Capabilities:"}
+                          {actualIndex === 5 && "Services:"}
+                          {actualIndex === 6 && "Security:"}
+                          {actualIndex === 7 && "Features:"}
+                          {actualIndex === 8 && "Solutions:"}
+                        </p>
+                        <ul className="text-xs text-gray-600 space-y-1">
+                          {service.features.map((feature, featureIndex) => (
+                            <motion.li 
+                              key={featureIndex}
+                              className="hover:text-gray-800 transition-colors"
+                              whileHover={{ x: 4 }}
+                              transition={{ duration: 0.1 }}
+                            >
+                              {feature}
+                            </motion.li>
+                          ))}
+                        </ul>
+                      </div>
+                      
+                      {/* Read More Link */}
+                      <motion.button 
+                        className="text-blue-600 text-xs md:text-sm font-medium hover:text-blue-700 transition-all duration-200 relative group/button"
+                        whileHover={{ x: 4 }}
+                        transition={{ duration: 0.1 }}
+                      >
+                        Read More
+                        <motion.span 
+                          className="absolute bottom-0 left-0 h-0.5 bg-blue-600"
+                          initial={{ width: 0 }}
+                          whileHover={{ width: "100%" }}
+                          transition={{ duration: 0.15 }}
+                        />
+                      </motion.button>
+                    </motion.div>
+                  );
+                })}
+              </AnimatePresence>
+            </div>
+
+            {/* Desktop Navigation Controls */}
+            <div className="flex items-center justify-between mt-8">
+              {/* Previous Button */}
+              <button
+                onClick={prevPage}
+                className="p-3 rounded-full bg-blue-600 text-white hover:bg-blue-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+                aria-label="Previous page"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                </svg>
+              </button>
+
+              {/* Page Indicators */}
+              <div className="flex space-x-2">
+                {Array.from({ length: Math.ceil(services.length / getCardsPerPage()) }, (_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => goToPage(index)}
+                    className={`w-3 h-3 rounded-full transition-colors duration-200 ${
+                      currentPage === index 
+                        ? 'bg-blue-600' 
+                        : 'bg-gray-300 hover:bg-gray-400'
+                    }`}
+                    aria-label={`Go to page ${index + 1}`}
                   />
-                </motion.button>
-              </motion.div>
-            ))}
+                ))}
+              </div>
+
+              {/* Next Button */}
+              <button
+                onClick={nextPage}
+                className="p-3 rounded-full bg-blue-600 text-white hover:bg-blue-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                aria-label="Next page"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+            </div>
           </div>
         )}
       </div>
