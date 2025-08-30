@@ -5,12 +5,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 export default function ServicesSection() {
   const [isVisible, setIsVisible] = useState(false);
-  const [visibleCards, setVisibleCards] = useState(new Set());
   const [currentSlide, setCurrentSlide] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
-  const [isCarouselMode, setIsCarouselMode] = useState(false);
+  const [isCarouselMode, setIsCarouselMode] = useState(true); // Default to carousel for SSR
   const sectionRef = useRef(null);
-  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const carouselRef = useRef<HTMLDivElement | null>(null);
   
   const services = [
@@ -179,6 +177,8 @@ export default function ServicesSection() {
   // Check screen size to determine carousel mode
   useEffect(() => {
     const checkScreenSize = () => {
+      if (typeof window === 'undefined') return;
+      
       const newCarouselMode = window.innerWidth < 768;
       
       // Reset pagination when switching modes
@@ -214,10 +214,6 @@ export default function ServicesSection() {
     setCurrentSlide((prev) => (prev - 1 + (maxSlide + 1)) % (maxSlide + 1));
   };
 
-  const goToSlide = (index: number) => {
-    setCurrentSlide(index);
-  };
-
   // Touch/swipe handlers
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
@@ -247,13 +243,17 @@ export default function ServicesSection() {
 
   // Get slides to show based on screen size
   const getSlidesToShow = () => {
+    if (typeof window === 'undefined') return 1; // Default for SSR
     if (window.innerWidth >= 1024) return 4; // lg: 4 cards on desktop
     if (window.innerWidth >= 768) return 2;  // md: 2 cards on tablet
     return 1; // mobile: 1 card
   };
 
   // Get cards to show per page for desktop grid
-  const getCardsPerPage = () => {// lg: 6 cards (2 rows of 3)
+  const getCardsPerPage = () => {
+    if (typeof window === 'undefined') return 4; // Default for SSR
+    if (window.innerWidth >= 1280) return 4; // xl: 8 cards (2 rows of 4)
+    if (window.innerWidth >= 1024) return 4; // lg: 6 cards (2 rows of 3)
     if (window.innerWidth >= 768) return 4;  // md: 4 cards (2 rows of 2)
     return 3; // smaller screens: 3 cards
   };

@@ -38,7 +38,7 @@ export default function HappyClientsSection() {
   const [isVisible, setIsVisible] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
-  const [isCarouselMode, setIsCarouselMode] = useState(false);
+  const [isCarouselMode, setIsCarouselMode] = useState(true); // Default to carousel for SSR
   const sectionRef = useRef(null);
   const carouselRef = useRef<HTMLDivElement | null>(null);
 
@@ -63,6 +63,8 @@ export default function HappyClientsSection() {
   // Check screen size to determine carousel mode
   useEffect(() => {
     const checkScreenSize = () => {
+      if (typeof window === 'undefined') return;
+      
       const newCarouselMode = window.innerWidth < 768;
       
       // Reset pagination when switching modes
@@ -126,14 +128,16 @@ export default function HappyClientsSection() {
 
   // Get slides to show based on screen size
   const getSlidesToShow = () => {
+    if (typeof window === 'undefined') return 1; // Default for SSR
     if (window.innerWidth >= 1024) return 3; // lg: 3 cards on desktop
     if (window.innerWidth >= 768) return 2;  // md: 2 cards on tablet
     return 1; // mobile: 1 card
   };
 
   // Get cards to show per page for desktop grid
-  const getCardsPerPage = () => { // xl: 6 cards (2 rows of 3)
-    if (window.innerWidth >= 1024) return 3; // lg: 6 cards (2 rows of 3)
+  const getCardsPerPage = () => {
+    if (typeof window === 'undefined') return 3; // Default for SSR
+    if (window.innerWidth >= 1024) return 3; // lg: 3 cards (1 row of 3)
     if (window.innerWidth >= 768) return 4;  // md: 4 cards (2 rows of 2)
     return 3; // smaller screens: 3 cards
   };
