@@ -35,7 +35,7 @@ export default function ContactPage() {
             <div className="space-y-8">
               <div>
                 <h2 className="text-3xl font-bold text-gray-900 mb-6">
-                  Let's Start a Conversation
+                  Let&apos;s Start a Conversation
                 </h2>
                 <p className="text-gray-600 text-lg mb-8">
                   Whether you have a project in mind, need consultation, or just want to say hello, 
