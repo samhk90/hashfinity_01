@@ -86,7 +86,7 @@ export default function HeroSection() {
             whileTap={{ scale: 0.95 }}
           >
             <Link
-              href="/consultation"
+              href="contact"
               className="group inline-flex items-center px-8 py-4 text-lg font-semibold text-blue-700 bg-transparent border-2 border-blue-600 rounded-full hover:bg-gradient-to-r hover:from-blue-500 hover:to-blue-600 hover:text-white transition-all duration-300 ease-in-out focus:outline-none focus:ring-4 focus:ring-blue-300 focus:ring-opacity-50 shadow-lg hover:shadow-blue-500/25 relative overflow-hidden"
             >
               {/* Button shimmer effect */}

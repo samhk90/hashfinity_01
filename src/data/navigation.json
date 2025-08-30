@@ -19,10 +19,14 @@
     {
       "label":"Why Us",
       "href":"#why-us"
+    },
+    {
+      "label": "Contact",
+      "href": "/contact"
     }
   ],
   "ctaButton": {
     "label": "GET IN TOUCH",
-    "href": "#contact"
+    "href": "/contact"
   }
 }

@@ -5,8 +5,8 @@ const VendorSection = () => {
   const features = [
     {
       icon: <CalendarDaysIcon className="w-8 h-8 text-blue-600" />,
-      title: "Established in 2023",
-      description: "Founded in 2023, Hashfinity is a professional thinking IT solutions offering innovative solutions in web engineering, mobile, and content technology solutions."
+      title: "Established in 2025",
+      description: "Founded in 2025, Hashfinity is a professional thinking IT solutions offering innovative solutions in web engineering, mobile, and content technology solutions."
     },
     {
       icon: <EyeIcon className="w-8 h-8 text-blue-600" />,
