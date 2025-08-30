@@ -20,8 +20,8 @@ export default function ContactPage() {
             Get In Touch
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Ready to transform your vision into digital excellence? We'd love to hear from you. 
-            Let's discuss how we can help your business grow and thrive in the digital world.
+            Ready to transform your vision into digital excellence? We&apos;d love to hear from you. 
+            Let&apos;s discuss how we can help your business grow and thrive in the digital world.
           </p>
         </div>
       </section>
@@ -39,7 +39,7 @@ export default function ContactPage() {
                 </h2>
                 <p className="text-gray-600 text-lg mb-8">
                   Whether you have a project in mind, need consultation, or just want to say hello, 
-                  we're here to help. Fill out the form and we'll get back to you within 24 hours.
+                  we&apos;re here to help. Fill out the form and we&apos;ll get back to you within 24 hours.
                 </p>
               </div>
 

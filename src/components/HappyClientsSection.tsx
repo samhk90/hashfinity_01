@@ -69,7 +69,7 @@ export default function HappyClientsSection() {
            Our Happy Clients
           </h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            Our clients trust us to deliver exceptional results. Here's what they have to say about their experience working with us.
+            Our clients trust us to deliver exceptional results. Here&apos;s what they have to say about their experience working with us.
           </p>
         </div>
 

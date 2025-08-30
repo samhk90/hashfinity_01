@@ -8,7 +8,6 @@ export default function ServicesSection() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
   const [isCarouselMode, setIsCarouselMode] = useState(false); // Default to false for SSR to prevent hydration mismatch
-  const [mounted, setMounted] = useState(false);
   const sectionRef = useRef(null);
   const carouselRef = useRef<HTMLDivElement | null>(null);
   
