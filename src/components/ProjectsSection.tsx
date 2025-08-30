@@ -10,24 +10,24 @@ export default function ProjectsSection() {
   const projects = [
     {
       id: 1,
-      title: "CRM-Steal",
-      description: "CRM-Steal is a SaaS platform that offers cloud-based customer relationship tools as a complete toolkit helping you to improve your customer relationships, increase sales, and build trust to deliver targeted result-driven marketing campaigns that drive better results.",
+      title: "Caller Desk",
+      description: "CallerDesk is a B2B SaaS platform that offers cloud telephony solutions such as virtual phone numbers, IVR (Interactive Voice Response), call routing, and real-time analytics for startups, SMEs, and enterprises. The platform integrates advanced telephony APIs to manage inbound and outbound calls, automate call distribution, and provide in-depth call reporting.",
       buttonText: "Get Free Consultation",
       bgColor: "bg-blue-200",
       logo: "CS"
     },
     {
       id: 2,
-      title: "Wine Era",
-      description: "Wine Era is a platform designed to connect wine lovers with premium wine selections from around the world. Our platform simplifies the process of discovering, purchasing, and enjoying exceptional wines from trusted vineyards and wine producers to ensure quality excellence for wine enthusiasts.",
-      buttonText: "Get Free Consultation", 
+      title: "Wizer Pro",
+      description: "Wizer is a modern freelancing platform designed to connect businesses with skilled professionals across various domains including design, development, marketing, and writing. The platform provides a seamless experience for both clients and freelancers-from job posting, bidding, project milestones, to secure payments and feedback systems.", 
       bgColor: "bg-orange-200",
+            buttonText: "Get Free Consultation",
       logo: "W"
     },
     {
       id: 3,
-      title: "VoucherX Deals",
-      description: "VoucherX Deals is a discount deal local deals company built for business that aims to democratize local offers & deals, from restaurants to travel. Our platform removes friction to let business and independent developers free and empowering vendors for easy integrations with targeted marketing efforts.",
+      title: "Unaati",
+      description: "Unaati Hotels is a boutique hotel chain that needed a digital platform to enhance brand visibility, attract direct bookings, and provide a luxurious yet intuitive online experience. The website was developed to reflect the elegance of their physical properties, incorporating rich imagery, fast-loading pages, and a multilingual interface. We also integrated a third-party booking engine to enable seamless reservations.",
       buttonText: "Get Free Consultation",
       bgColor: "bg-green-200", 
       logo: "VX"
@@ -148,7 +148,7 @@ export default function ProjectsSection() {
                     : 'translate-y-2 opacity-0 scale-95'
                 }`}
                 style={{ transitionDelay: `${index * 200 + 400}ms` }}>
-                  <button className="group inline-flex items-center px-6 py-3 text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-300 focus:ring-opacity-50">
+                  <a href="/contact"><button className="group inline-flex items-center px-6 py-3 text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-300 focus:ring-opacity-50">
                     <span className="font-medium">{project.buttonText}</span>
                     <svg 
                       className="w-4 h-4 ml-2 transition-all duration-300 group-hover:translate-x-1" 
@@ -158,7 +158,7 @@ export default function ProjectsSection() {
                     >
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                     </svg>
-                  </button>
+                  </button></a>
                 </div>
               </div>
               
@@ -259,16 +259,16 @@ export default function ProjectsSection() {
         <div className={`text-center mt-16 transform transition-all duration-1000 delay-1000 ${
           isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
         }`}>
-          <button className="group inline-flex items-center px-8 py-4 text-lg font-semibold text-white bg-blue-600 rounded-full hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300 focus:ring-opacity-50 shadow-lg hover:shadow-xl">
-            <span>View All</span>
-            <svg 
+          <button className="group inline-flex items-center px-8 py-4 text-lg font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300 focus:ring-opacity-50 shadow-lg hover:shadow-xl">
+            <span>More coming.....</span>
+            {/* <svg 
               className="w-5 h-5 ml-2 transition-all duration-300 group-hover:translate-x-1" 
               fill="none" 
               stroke="currentColor" 
               viewBox="0 0 24 24"
             >
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
+            </svg> */}
           </button>
         </div>
       </div>
