@@ -77,7 +77,7 @@ export default function ProjectsSection() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-16 px-4 bg-gray-50 relative overflow-hidden">
+    <section id='projects' ref={sectionRef} className="py-16 px-4 bg-gray-50 relative overflow-hidden">
       <div className="container mx-auto max-w-7xl">
         {/* Header */}
         <div className={`text-center mb-16 transform transition-all duration-1000 ${

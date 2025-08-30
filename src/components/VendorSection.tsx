@@ -26,7 +26,7 @@ const VendorSection = () => {
   ];
 
   return (
-    <section className="py-16 px-4 sm:px-6 lg:px-8 bg-white">
+    <section id='why-us' className="py-16 px-4 sm:px-6 lg:px-8 bg-white">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-16">
@@ -51,9 +51,6 @@ const VendorSection = () => {
               <p className="text-gray-600 text-sm leading-relaxed mb-4">
                 {feature.description}
               </p>
-              <button className="text-blue-600 font-medium hover:text-blue-700 transition-colors">
-                Read More
-              </button>
             </div>
           ))}
         </div>

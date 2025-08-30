@@ -2,27 +2,27 @@
   "mainNavigation": [
     {
       "label": "Services",
-      "href": "/services"
-    },
-    {
-      "label": "About Us",
-      "href": "/about"
-    },
-    {
-      "label": "Services",
-      "href": "/services"
+      "href": "#services"
     },
     {
       "label": "Projects",
-      "href": "/projects"
+      "href": "#projects"
     },
     {
-      "label": "How We Work",
-      "href": "/how-we-work"
+      "label": "About Us",
+      "href": "#about"
+    },
+    {
+      "label": "FAQs",
+      "href": "#faqs"
+    },
+    {
+      "label":"Why Us",
+      "href":"#why-us"
     }
   ],
   "ctaButton": {
     "label": "GET IN TOUCH",
-    "href": "/contact"
+    "href": "#contact"
   }
 }

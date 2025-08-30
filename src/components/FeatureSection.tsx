@@ -54,7 +54,7 @@ export default function FeatureSection() {
   };
 
   return (
-    <motion.section 
+    <motion.section id='about'
       ref={ref}
       initial="hidden"
       animate={inView ? "visible" : "hidden"}

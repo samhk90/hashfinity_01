@@ -17,7 +17,7 @@ const SolutionsSection = () => {
       initial={{ opacity: 0 }}
       animate={inView ? { opacity: 1 } : { opacity: 0 }}
       transition={{ duration: 0.4 }}
-      className="px-4 sm:py-8 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-100 via-blue-300 to-blue-600"
+      className="bg-gradient-to-br from-blue-100 via-blue-300 to-blue-600"
     >
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12 items-center">

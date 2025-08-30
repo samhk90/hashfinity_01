@@ -7,7 +7,8 @@ export default function ServicesSection() {
   const [isVisible, setIsVisible] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
-  const [isCarouselMode, setIsCarouselMode] = useState(true); // Default to carousel for SSR
+  const [isCarouselMode, setIsCarouselMode] = useState(false); // Default to false for SSR to prevent hydration mismatch
+  const [mounted, setMounted] = useState(false);
   const sectionRef = useRef(null);
   const carouselRef = useRef<HTMLDivElement | null>(null);
   
@@ -292,7 +293,7 @@ export default function ServicesSection() {
   }, [isCarouselMode]);
 
   return (
-    <section ref={sectionRef} className="py-12 px-4 bg-white relative overflow-hidden">
+    <section ref={sectionRef} id='services' className="py-12 px-4 bg-white relative overflow-hidden">
       <div className="container mx-auto max-w-7xl">
         {/* Header */}
         <div className={`text-left mb-6 md:mb-10 transform transition-all duration-500 ${
@@ -500,20 +501,7 @@ export default function ServicesSection() {
                         </ul>
                       </div>
                       
-                      {/* Read More Link */}
-                      <motion.button 
-                        className="text-blue-600 text-xs md:text-sm font-medium hover:text-blue-700 transition-all duration-200 relative group/button"
-                        whileHover={{ x: 4 }}
-                        transition={{ duration: 0.1 }}
-                      >
-                        Read More
-                        <motion.span 
-                          className="absolute bottom-0 left-0 h-0.5 bg-blue-600"
-                          initial={{ width: 0 }}
-                          whileHover={{ width: "100%" }}
-                          transition={{ duration: 0.15 }}
-                        />
-                      </motion.button>
+                     
                     </motion.div>
                   );
                 })}

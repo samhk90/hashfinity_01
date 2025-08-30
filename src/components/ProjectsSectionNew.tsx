@@ -37,7 +37,7 @@ export default function ProjectsSection() {
   ];
 
   return (
-    <motion.section 
+    <motion.section id='projects'
       ref={ref}
       initial={{ opacity: 0 }}
       animate={inView ? { opacity: 1 } : { opacity: 0 }}
