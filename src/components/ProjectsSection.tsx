@@ -117,7 +117,7 @@ export default function ProjectsSection() {
                       ? 'scale-100 rotate-0 opacity-100' 
                       : 'scale-75 rotate-12 opacity-0'
                   }`}
-                  style={{ transitionDelay: `${index * 200 + 100}ms` }}>
+                  style={{ transitionDelay: `${index * 200 + 50}ms` }}>
                     <span className="text-white font-bold text-lg">{project.logo}</span>
                   </div>
                   
@@ -126,7 +126,7 @@ export default function ProjectsSection() {
                       ? 'translate-x-0 opacity-100' 
                       : 'translate-x-4 opacity-0'
                   }`}
-                  style={{ transitionDelay: `${index * 200 + 200}ms` }}>
+                  style={{ transitionDelay: `${index * 200 + 50}ms` }}>
                     {project.title}
                   </h3>
                 </div>
@@ -137,7 +137,7 @@ export default function ProjectsSection() {
                     ? 'translate-y-0 opacity-100' 
                     : 'translate-y-2 opacity-0'
                 }`}
-                style={{ transitionDelay: `${index * 200 + 300}ms` }}>
+                style={{ transitionDelay: `${index * 200 + 50}ms` }}>
                   {project.description}
                 </p>
                 
@@ -147,7 +147,7 @@ export default function ProjectsSection() {
                     ? 'translate-y-0 opacity-100 scale-100' 
                     : 'translate-y-2 opacity-0 scale-95'
                 }`}
-                style={{ transitionDelay: `${index * 200 + 400}ms` }}>
+                style={{ transitionDelay: `${index * 200 + 50}ms` }}>
                   <a href="/contact"><button className="group inline-flex items-center px-6 py-3 text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-300 focus:ring-opacity-50">
                     <span className="font-medium">{project.buttonText}</span>
                     <svg 
@@ -169,7 +169,7 @@ export default function ProjectsSection() {
                     ? 'scale-100 rotate-0 opacity-100' 
                     : 'scale-90 rotate-2 opacity-0'
                 }`}
-                style={{ transitionDelay: `${index * 200 + 100}ms` }}>
+                style={{ transitionDelay: `${index * 200 + 50}ms` }}>
                   {/* Device Mockups Container */}
                   <div className="relative flex justify-center items-center h-80">
                     {/* Main Phone */}

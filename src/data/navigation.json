@@ -2,23 +2,23 @@
   "mainNavigation": [
     {
       "label": "Services",
-      "href": "#services"
+      "href": "/#services"
     },
     {
       "label": "Projects",
-      "href": "#projects"
+      "href": "/#projects"
     },
     {
       "label": "About Us",
-      "href": "#about"
+      "href": "/#about"
     },
     {
       "label": "FAQs",
-      "href": "#faqs"
+      "href": "/#faqs"
     },
     {
       "label":"Why Us",
-      "href":"#why-us"
+      "href":"/#why-us"
     },
     {
       "label": "Contact",

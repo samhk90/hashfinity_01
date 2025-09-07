@@ -38,7 +38,7 @@ export default function Footer() {
                 <p className="text-gray-600">+91 8421917322</p>
               </div>
               <div>
-                <p className="text-gray-600">+91 88559596432</p>
+                <p className="text-gray-600">+91 8855959643</p>
               </div>
               
             </div>

@@ -1,35 +1,68 @@
 "use client";
 
 import { useState, useRef, useEffect } from 'react';
+import Image from 'next/image';
 
-const clients = [
+const clientLogos = [
   {
-    name: "Catalystcreek",
-    description: "CatalystCreek is a B2B SaaS Platform that offers self-service virtual phone numbers, IVR, Interactive Voice Response technology, advanced call analytics for startups, SMEs, and enterprises."
+    name: "AbhiJaat Sankalpana",
+    logo: "/Logos/AbhiJaat Sankalpana.png"
   },
   {
-    name: "ComplyKore",
-    description: "ComplyKore is a full-scale HR Performance platform, providing seamless support to enterprises that require enhanced accessibility, improved quality, and legal compliance systems."
+    name: "Caller Desk",
+    logo: "/Logos/Caller_Desk.png"
   },
   {
-    name: "Marketshook",
-    description: "Marketshook is a B2B SaaS Platform built in Django framework, bringing with real-time insights into the technology stack buying decisions across the full timelines of their target customers."
+    name: "Comply Gate",
+    logo: "/Logos/Comply_Gate.png"
   },
   {
-    name: "CivicCore",
-    description: "CivicCore is a comprehensive data analysis and civic management platform that connects healthcare operations and citizen health tracking. Built with advanced analytics tools and provides an intuitive interface for analyzing performance within administration tasks."
+    name: "Dr. Harsha",
+    logo: "/Logos/Dr._Harsha.png"
   },
   {
-    name: "TechFlow",
-    description: "TechFlow is an innovative project management platform that streamlines workflow automation and team collaboration for modern businesses."
+    name: "ElectroKld",
+    logo: "/Logos/ElectroKld.png"
   },
   {
-    name: "DataSync",
-    description: "DataSync provides real-time data synchronization solutions for enterprise applications, ensuring seamless integration across multiple platforms."
+    name: "Envirocon",
+    logo: "/Logos/Envirocon.png"
   },
   {
-    name: "CloudBridge",
-    description: "CloudBridge offers comprehensive cloud migration services and infrastructure management for businesses transitioning to digital-first operations."
+    name: "Iconic",
+    logo: "/Logos/Iconic.png"
+  },
+  {
+    name: "Nirosha",
+    logo: "/Logos/Nirosha.png"
+  },
+  {
+    name: "Oskar Tech",
+    logo: "/Logos/Oskar_Tech.png"
+  },
+  {
+    name: "Qwinzi",
+    logo: "/Logos/Qwinzi.png"
+  },
+  {
+    name: "Shree Balaji",
+    logo: "/Logos/Shree_Balaji.png"
+  },
+  {
+    name: "Syte",
+    logo: "/Logos/Syte.png"
+  },
+  {
+    name: "Viaz Cloud",
+    logo: "/Logos/Viaz_Cloud (1).png"
+  },
+  {
+    name: "Wizer",
+    logo: "/Logos/Wizer.png"
+  },
+  {
+    name: "Zfinity",
+    logo: "/Logos/Zfinity.png"
   }
 ];
 
@@ -55,56 +88,49 @@ export default function HappyClientsSection() {
     return () => observer.disconnect();
   }, []);
 
-  // Duplicate clients array for seamless loop
-  const duplicatedClients = [...clients, ...clients, ...clients];
+  // Duplicate logos array for seamless loop
+  const duplicatedLogos = [...clientLogos, ...clientLogos, ...clientLogos];
 
   return (
-    <section ref={sectionRef} id="testimonials" className="py-10 bg-gradient-to-r from-blue-200  to-blue-400 relative overflow-hidden">
-      <div className="container mx-auto max-w-7xl px-4">
+    <section ref={sectionRef} id="testimonials" className="py-10 bg-gradient-to-r from-blue-200 to-blue-400 relative overflow-hidden">
+      <div className="container mx-auto w-full px-4">
         {/* Header */}
         <div className={`text-center mb-12 transform transition-all duration-1000 ${
           isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
         }`}>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
-           Our Happy Clients
+            Our Happy Clients
           </h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            Our clients trust us to deliver exceptional results. Here&apos;s what they have to say about their experience working with us.
+            Trusted by leading companies worldwide. We're proud to work with these amazing organizations.
           </p>
         </div>
 
-        {/* Marquee Container */}
+        {/* Logo Marquee Container */}
         <div className={`relative transform transition-all duration-1000 delay-300 ${
           isVisible ? 'translate-y-0 opacity-100' : 'translate-y-5 opacity-0'
         }`}>
-          {/* Gradient Overlays */}
-          <div className="absolute left-0 top-0 w-32 h-full bg-gradient-to-r from-blue-50 to-transparent z-10 pointer-events-none"></div>
-          <div className="absolute right-0 top-0 w-32 h-full bg-gradient-to-l from-white to-transparent z-10 pointer-events-none"></div>
+          {/* Reduced Gradient Overlays - only for smooth edge effect */}
+          <div className="absolute left-0 top-0 w-8 sm:w-2 h-full bg-gradient-to-r from-blue-200 to-transparent z-10 pointer-events-none"></div>
+          <div className="absolute right-0 top-0 w-8 sm:w-2 h-full bg-gradient-to-l from-blue-200 to-transparent z-10 pointer-events-none"></div>
           
-          {/* Scrolling Marquee */}
+          {/* Scrolling Logo Marquee */}
           <div className="marquee-container overflow-hidden">
-            <div className="marquee-content flex items-stretch gap-6 animate-marquee">
-              {duplicatedClients.map((client, index) => (
+            <div className="marquee-content flex items-center gap-4 sm:gap-8 md:gap-12 animate-marquee">
+              {duplicatedLogos.map((client, index) => (
                 <div 
                   key={`${client.name}-${index}`}
-                  className="flex-shrink-0 bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 border border-gray-100 min-w-[350px] max-w-[350px]"
+                  className="flex-shrink-0 bg-white rounded-xl p-3 sm:p-4 md:p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 border border-gray-100 w-32 h-20 sm:w-40 sm:h-24 md:w-48 md:h-32 flex items-center justify-center group"
                 >
-                  {/* Client Name */}
-                  <div className="flex items-center mb-4">
-                    <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center text-white font-bold text-lg mr-4">
-                      {client.name.charAt(0)}
-                    </div>
-                    <h3 className="text-xl font-bold text-gray-900">
-                      {client.name}
-                    </h3>
+                  <div className="relative w-full h-full flex items-center justify-center">
+                    <Image
+                      src={client.logo}
+                      alt={`${client.name} logo`}
+                      width={160}
+                      height={80}
+                      className="max-w-full max-h-full object-contain filter grayscale group-hover:grayscale-0 transition-all duration-300"
+                    />
                   </div>
-                  
-                  {/* Client Description */}
-                  <p className="text-gray-600 leading-relaxed text-sm">
-                    {client.description}
-                  </p>
-                  
-                 
                 </div>
               ))}
             </div>
@@ -117,21 +143,21 @@ export default function HappyClientsSection() {
           mask-image: linear-gradient(
             to right,
             transparent,
-            black 128px,
-            black calc(100% - 128px),
+            black 32px,
+            black calc(100% - 32px),
             transparent
           );
           -webkit-mask-image: linear-gradient(
             to right,
             transparent,
-            black 128px,
-            black calc(100% - 128px),
+            black 32px,
+            black calc(100% - 32px),
             transparent
           );
         }
         
         .marquee-content {
-          animation: marquee 60s linear infinite;
+          animation: marquee 40s linear infinite;
           width: fit-content;
         }
         
@@ -151,6 +177,26 @@ export default function HappyClientsSection() {
         @media (prefers-reduced-motion: reduce) {
           .marquee-content {
             animation: none;
+          }
+        }
+        
+        /* Responsive adjustments */
+        @media (min-width: 640px) {
+          .marquee-container {
+            mask-image: linear-gradient(
+              to right,
+              transparent,
+              black 64px,
+              black calc(100% - 64px),
+              transparent
+            );
+            -webkit-mask-image: linear-gradient(
+              to right,
+              transparent,
+              black 64px,
+              black calc(100% - 64px),
+              transparent
+            );
           }
         }
       `}</style>

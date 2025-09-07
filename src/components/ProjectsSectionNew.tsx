@@ -41,7 +41,7 @@ export default function ProjectsSection() {
       ref={ref}
       initial={{ opacity: 0 }}
       animate={inView ? { opacity: 1 } : { opacity: 0 }}
-      transition={{ duration: 0.8 }}
+      transition={{ duration: 0.3 }}
       className="py-16 px-4 bg-gray-50 relative overflow-hidden"
     >
       {/* Animated background elements */}
