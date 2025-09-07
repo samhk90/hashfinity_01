@@ -102,7 +102,7 @@ export default function HappyClientsSection() {
             Our Happy Clients
           </h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            Trusted by leading companies worldwide. We're proud to work with these amazing organizations.
+            Trusted by leading companies worldwide. We&apos;re proud to work with these amazing organizations.
           </p>
         </div>
 
