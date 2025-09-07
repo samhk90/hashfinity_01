@@ -32,8 +32,11 @@ export default function Footer() {
 
           {/* For Sales Inquiry Column */}
           <div>
-            <h3 className="text-gray-900 font-semibold mb-4">For Sales Inquiry</h3>
+            <h3 className="text-gray-900 font-semibold mb-4">For Inquiry</h3>
             <div className="space-y-3">
+              <div>
+                <p className="text-gray-600">business@hashfinity.tech</p>
+              </div>
               <div>
                 <p className="text-gray-600">+91 8421917322</p>
               </div>

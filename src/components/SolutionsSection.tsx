@@ -201,7 +201,12 @@ const SolutionsSection = () => {
                 whileTap={{ scale: 0.95 }}
                 className="inline-flex items-center px-4 sm:px-6 py-2 sm:py-3 bg-transparent border-2 border-gray-900 text-gray-900 font-semibold rounded-lg hover:bg-gray-900 hover:text-white transition-all duration-150 group text-sm sm:text-base"
               >
-                <span className="mr-2">Get Free Consultation</span>
+                <span
+                  className="mr-2 cursor-pointer"
+                  onClick={() => window.location.href = '/contact'}
+                >
+                  Get Free Consultation
+                </span>
                 <motion.div
                   whileHover={{ x: 5 }}
                   transition={{ duration: 0.1 }}
