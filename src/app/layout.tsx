@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { organizationJsonLd, websiteJsonLd } from "@/lib/structured-data";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -13,8 +14,76 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Hashfinity - Transform Your Vision Into Digital Excellence",
-  description: "We help businesses grow, streamline operations, and stay ahead in today's competitive market with end-to-end digital solutions and continuous support.",
+  title: {
+    default: "Hashfinity - Transform Your Vision Into Digital Excellence",
+    template: "%s | Hashfinity"
+  },
+  description: "Leading software development company specializing in custom web applications, mobile apps, and digital solutions. We help businesses grow with Flutter, Node.js, React, and modern technology stacks.",
+  keywords: [
+    "software development",
+    "web development", 
+    "mobile app development",
+    "custom software solutions",
+    "Flutter development",
+    "Node.js development",
+    "React development",
+    "digital transformation",
+    "SaaS development",
+    "API integration",
+    "e-commerce solutions",
+    "startup development",
+    "business automation",
+    "cloud solutions",
+    "Hashfinity"
+  ],
+  authors: [{ name: "Hashfinity" }],
+  creator: "Hashfinity",
+  publisher: "Hashfinity",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  metadataBase: new URL("https://hashfinity.tech"),
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://hashfinity.tech",
+    title: "Hashfinity - Transform Your Vision Into Digital Excellence",
+    description: "Leading software development company specializing in custom web applications, mobile apps, and digital solutions. We help businesses grow with modern technology stacks.",
+    siteName: "Hashfinity",
+    images: [
+      {
+        url: "/logo1.png",
+        width: 1200,
+        height: 630,
+        alt: "Hashfinity - Software Development Company",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Hashfinity - Transform Your Vision Into Digital Excellence",
+    description: "Leading software development company specializing in custom web applications, mobile apps, and digital solutions.",
+    images: ["/logo1.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  verification: {
+    google: "your-google-verification-code", // Add your Google Search Console verification code
+  },
 };
 
 export default function RootLayout({
@@ -24,6 +93,20 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(organizationJsonLd),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(websiteJsonLd),
+          }}
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

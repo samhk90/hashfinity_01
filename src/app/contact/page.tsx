@@ -2,15 +2,55 @@ import { Metadata } from 'next';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ContactForm from '@/components/ContactForm';
+import { localBusinessJsonLd } from '@/lib/structured-data';
 
 export const metadata: Metadata = {
-  title: 'Contact Us - Hashfinity',
-  description: 'Get in touch with Hashfinity. We\'d love to hear from you and discuss how we can help transform your vision into digital excellence.',
+  title: 'Contact Hashfinity - Get Your Free Software Development Consultation',
+  description: 'Ready to transform your business with custom software? Contact Hashfinity for a free consultation. We develop web apps, mobile apps, and digital solutions in Pune, India.',
+  keywords: [
+    "contact software development company",
+    "free software consultation",
+    "custom software development Pune",
+    "web development services contact",
+    "mobile app development consultation",
+    "software development quote",
+    "technology consulting services",
+    "digital transformation consultation",
+    "software development company India",
+    "Hashfinity contact"
+  ],
+  openGraph: {
+    title: 'Contact Hashfinity - Free Software Development Consultation',
+    description: 'Get in touch with our expert development team. Free consultation for custom software, web apps, and mobile app development projects.',
+    url: 'https://hashfinity.tech/contact',
+    images: [
+      {
+        url: '/logo1.png',
+        width: 1200,
+        height: 630,
+        alt: 'Contact Hashfinity - Software Development Company',
+      },
+    ],
+  },
+  twitter: {
+    title: 'Contact Hashfinity - Free Software Development Consultation',
+    description: 'Get in touch with our expert development team. Free consultation for custom software, web apps, and mobile app development projects.',
+  },
+  alternates: {
+    canonical: 'https://hashfinity.tech/contact',
+  },
 };
 
 export default function ContactPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(localBusinessJsonLd),
+        }}
+      />
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
       <Header />
       
       {/* Hero Section */}
@@ -104,6 +144,7 @@ export default function ContactPage() {
       </section>
 
       <Footer />
-    </div>
+      </div>
+    </>
   );
 }
