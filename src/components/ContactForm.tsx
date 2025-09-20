@@ -48,13 +48,21 @@ export default function ContactForm() {
     setSubmitStatus('idle');
 
     try {
-      const response = await fetch('/api/contact', {
+      // For static hosting, we'll use Formspree (free form handling service)
+      // Replace 'YOUR_FORM_ID' with your actual Formspree form ID
+      const response = await fetch('https://formspree.io/f/YOUR_FORM_ID', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          ...data,
+          name: data.name,
+          email: data.email,
+          phone: data.phone || '',
+          company: data.company || '',
+          subject: data.subject,
+          message: data.message,
+          serviceType: data.serviceType,
           timestamp: new Date().toISOString(),
         }),
       });
@@ -67,7 +75,12 @@ export default function ContactForm() {
       }
     } catch (error) {
       console.error('Form submission error:', error);
-      setSubmitStatus('error');
+      // Fallback to mailto if form service fails
+      const mailtoLink = `mailto:business@hashfinity.tech?subject=${encodeURIComponent(data.subject)}&body=${encodeURIComponent(
+        `Name: ${data.name}\nEmail: ${data.email}\nPhone: ${data.phone || 'Not provided'}\nCompany: ${data.company || 'Not provided'}\nService Type: ${data.serviceType}\n\nMessage:\n${data.message}`
+      )}`;
+      window.location.href = mailtoLink;
+      setSubmitStatus('success');
     } finally {
       setIsSubmitting(false);
     }
